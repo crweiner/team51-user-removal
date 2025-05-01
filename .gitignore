@@ -1,0 +1,36 @@
+## Files to ignore, for local testing
+
+# Log files
+log.txt
+removal.log
+log.log
+*.log
+logs/
+*.log.*
+
+# Mac specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.AppleDouble
+.LSOverride
+Icon
+
+# Editor files
+.vscode/
+.idea/
+*.sublime*
+
+# Backup files
+*~
+*.bak
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+.*.tmp
