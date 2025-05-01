@@ -1,0 +1,6 @@
+# Sample email addresses for team51-user-removal.sh
+# One email address per line
+
+user1@automattic.com
+user2@automattic.com
+user3@automattic.com
