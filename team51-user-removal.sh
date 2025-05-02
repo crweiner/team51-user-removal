@@ -13,13 +13,14 @@ NC='\033[0m' # No Color
 # Initialize variables
 emails=()
 auto_confirm=false
-log_file="log.txt"
+timestamp=$(date "+%Y%m%d_%H%M")
+log_file="logfile_${timestamp}.txt"
 summary_only=false
 success_count=0
 failure_count=0
 failed_emails=()
 
-# Create or clear the log file
+# Create the log file
 > "$log_file"
 
 # Function to display help information
@@ -37,7 +38,7 @@ show_help() {
     echo "  -f, --file FILE            Read email addresses from a file (one per line)"
     echo "  -y, --yes                  Skip confirmation for each email"
     echo "  -s, --summary              Show only summary (suppress detailed output)"
-    echo "  -n, --no-log               Disable logging to log.txt"
+    echo "  -n, --no-log               Disable logging (default: logs to logfile_YYYYMMDD_HHMM.txt)"
     echo
     echo -e "${YELLOW}Examples:${NC}"
     echo "  ./team51-user-removal.sh                           # Interactive mode"
