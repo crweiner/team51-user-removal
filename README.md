@@ -18,7 +18,7 @@ This script enhances the functionality of the `team51 wpcom:delete-site-wp-user`
   - Colorized output for better readability
   - Summary of results after all operations
   - Error handling for failed operations
-  - Option to save output to a log file
+  - Automatic logging to timestamped files (logfile_YYYYMMDD_HHMM.txt) with option to disable
   - Option to show only summary (suppress detailed output)
 
 ## Installation
@@ -59,8 +59,8 @@ This will prompt you to enter email addresses one by one. Press Enter on an empt
 - `-e, --email EMAIL [...]`: Specify one or more email addresses
 - `-f, --file FILE`: Read email addresses from a file (one per line)
 - `-y, --yes`: Skip confirmation for each email (auto-confirm)
-- `-l, --log FILE`: Save output to a log file
 - `-s, --summary`: Show only summary (suppress detailed output)
+- `-n, --no-log`: Disable logging (default: logs to logfile_YYYYMMDD_HHMM.txt)
 
 ### Examples
 
@@ -84,9 +84,9 @@ This will prompt you to enter email addresses one by one. Press Enter on an empt
    ./team51-user-removal.sh -f emails.txt -y
    ```
 
-5. Save output to a log file:
+5. Disable logging:
    ```bash
-   ./team51-user-removal.sh -e user@automattic.com -l removal.log
+   ./team51-user-removal.sh -e user@automattic.com -n
    ```
 
 6. Show only summary (suppress detailed output):
@@ -112,6 +112,7 @@ user3@automattic.com
 - For each email, the script runs: `team51 wpcom:delete-site-wp-user EMAIL --multiple all`
 - The script captures and displays the full output from the team51 CLI tool.
 - A summary is displayed after all operations are complete.
+- By default, all output is logged to a timestamped file (e.g., `logfile_20250502_1348.txt`) in the same directory as the script. This prevents overwriting logs when running the script multiple times.
 
 ## Requirements
 

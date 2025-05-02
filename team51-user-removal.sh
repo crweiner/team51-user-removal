@@ -13,11 +13,15 @@ NC='\033[0m' # No Color
 # Initialize variables
 emails=()
 auto_confirm=false
-log_file=""
+timestamp=$(date "+%Y%m%d_%H%M")
+log_file="logfile_${timestamp}.txt"
 summary_only=false
 success_count=0
 failure_count=0
 failed_emails=()
+
+# Create the log file
+> "$log_file"
 
 # Function to display help information
 show_help() {
@@ -33,8 +37,8 @@ show_help() {
     echo "  -e, --email EMAIL [...]    Specify one or more email addresses"
     echo "  -f, --file FILE            Read email addresses from a file (one per line)"
     echo "  -y, --yes                  Skip confirmation for each email"
-    echo "  -l, --log FILE             Save output to a log file"
     echo "  -s, --summary              Show only summary (suppress detailed output)"
+    echo "  -n, --no-log               Disable logging (default: logs to logfile_YYYYMMDD_HHMM.txt)"
     echo
     echo -e "${YELLOW}Examples:${NC}"
     echo "  ./team51-user-removal.sh                           # Interactive mode"
@@ -42,7 +46,7 @@ show_help() {
     echo "  ./team51-user-removal.sh -e user1@example.com user2@example.com  # Multiple emails"
     echo "  ./team51-user-removal.sh -f emails.txt             # Read from file"
     echo "  ./team51-user-removal.sh -f emails.txt -y          # Auto-confirm"
-    echo "  ./team51-user-removal.sh -e user@example.com -l removal.log  # Log output"
+    echo "  ./team51-user-removal.sh -e user@example.com -n    # Disable logging"
     echo
     exit 0
 }
@@ -187,16 +191,9 @@ while [[ $# -gt 0 ]]; do
             auto_confirm=true
             shift
             ;;
-        -l|--log)
-            if [[ -n "$2" && ! "$2" =~ ^- ]]; then
-                log_file="$2"
-                # Create or clear the log file
-                > "$log_file"
-                shift 2
-            else
-                log_message "${RED}Error: --log requires a filename${NC}"
-                exit 1
-            fi
+        -n|--no-log)
+            log_file=""
+            shift
             ;;
         -s|--summary)
             summary_only=true

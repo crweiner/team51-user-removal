@@ -4,6 +4,7 @@
 log.txt
 removal.log
 log.log
+logfile_*.txt
 *.log
 logs/
 *.log.*
