@@ -18,7 +18,9 @@ log_file="logfile_${timestamp}.txt"
 summary_only=false
 success_count=0
 failure_count=0
+skipped_count=0
 failed_emails=()
+skipped_emails=()
 create_log=true
 
 # Function to display help information
@@ -108,7 +110,9 @@ remove_user() {
         read -p "Remove $email from all WordPress sites? (y/n): " confirm
         if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
             log_message "${YELLOW}Skipped: $email${NC}"
-            return 0
+            ((skipped_count++))
+            skipped_emails+=("$email")
+            return 2  # Return code 2 indicates skipped
         fi
     fi
     
@@ -143,16 +147,24 @@ remove_user() {
 
 # Function to display summary
 show_summary() {
-    local total=$((success_count + failure_count))
+    local total=$((success_count + failure_count + skipped_count))
     
     log_message "\n${BLUE}=== Summary ===${NC}"
     log_message "Total emails processed: $total"
     log_message "${GREEN}Successful: $success_count${NC}"
     log_message "${RED}Failed: $failure_count${NC}"
+    log_message "${YELLOW}Skipped: $skipped_count${NC}"
     
     if [[ ${#failed_emails[@]} -gt 0 ]]; then
         log_message "\n${RED}Failed emails:${NC}"
         for email in "${failed_emails[@]}"; do
+            log_message "  - $email"
+        done
+    fi
+    
+    if [[ ${#skipped_emails[@]} -gt 0 ]]; then
+        log_message "\n${YELLOW}Skipped emails:${NC}"
+        for email in "${skipped_emails[@]}"; do
             log_message "  - $email"
         done
     fi
