@@ -21,9 +21,7 @@ failure_count=0
 skipped_count=0
 failed_emails=()
 skipped_emails=()
-
-# Create the log file
-> "$log_file"
+create_log=true
 
 # Function to display help information
 show_help() {
@@ -176,6 +174,8 @@ show_summary() {
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -h|--help)
+            # Don't create a logfile for help commands
+            create_log=false
             show_help
             ;;
         -e|--email)
@@ -204,6 +204,7 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -n|--no-log)
+            create_log=false
             log_file=""
             shift
             ;;
@@ -217,6 +218,11 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+# Create the log file if needed
+if [[ "$create_log" = true && -n "$log_file" ]]; then
+    > "$log_file"
+fi
 
 # If no emails provided, prompt for them
 if [[ ${#emails[@]} -eq 0 ]]; then
